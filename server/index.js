@@ -12,6 +12,14 @@ app.get('/', (req, res) => {
     res.send("JWT Authentictaion API");
 })
 
+app.post("/login",(req,res) => {
+    console.log(req.body);
+})
+
+app.post("/signin",(req,res) => {
+    console.log(req.body);
+})
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, (req, res) => {
