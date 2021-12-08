@@ -8,7 +8,8 @@ import { register } from "../../api";
 const schema = Yup.object().shape({
     username: Yup.string('Enter your username').min(3,'Too Short').required('Required'),
     email: Yup.string('Enter your email').email('Must be a valid email').required('Required'),
-    password: Yup.string('Enter your password').min(5, 'Too Short!').required('Required')
+    password: Yup.string('Enter your password').min(5, 'Too Short!').required('Required'),
+    passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
 const Register = () => {
@@ -22,7 +23,8 @@ const Register = () => {
                 initialValues= {{
                     username: '',
                     email: '',
-                    password: ''
+                    password: '',
+                    passwordConfirmation: ''
                 }}
                 validationSchema = {schema}
                 onSubmit = { 
@@ -60,6 +62,14 @@ const Register = () => {
                         <label htmlFor="password" className="form-label">Password</label> 
                         <Field name="password" type="password" autoComplete="off" placeholder="*********" className="form-control" />
                         <ErrorMessage name="password" render={ msg => 
+                            <div className="form-text text-danger">
+                                {msg}
+                            </div>
+                        }/>
+
+                        <label htmlFor="passwordConfirmation" className="form-label">Confirm Password</label> 
+                        <Field name="passwordConfirmation" type="password" autoComplete="off" placeholder="*********" className="form-control" />
+                        <ErrorMessage name="passwordConfirmation" render={ msg => 
                             <div className="form-text text-danger">
                                 {msg}
                             </div>

@@ -17,34 +17,36 @@ app.get('/', (req, res) => {
     res.send("JWT Authentictaion API");
 })
 
-app.get('/users',(req,res) => {
-    res.status(200).json(emails);
+app.post("/login",async(req,res) => {
+
+    try{
+        
+        const { username, email, password } = req.body;
+        const user = await User.findOne({ username }).lean()
+        
+        if (!user) {
+            return res.json('Invalid username/password');
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        
+        if(!match ||  email!==user.email){
+            return res.json('Invalid email/password');
+        }
+
+        const token = jwt.sign({
+                id: user._id,
+                email: email
+            },
+            process.env.JWT_SECRET
+        );
+        
+        return res.status(200).json({token:token, message:"ok"});
+        
+    }catch(err){
+        res.json(err);
+    }
 })
-
-// app.post("/login",(req,res) => {
-//     const { username, email, password } = req.body
-// 	const user = await User.findOne({ username }).lean()
-
-// 	if (!user) {
-// 		return res.json({ status: 'error', error: 'Invalid username/password' })
-// 	}
-
-// 	if (await bcrypt.compare(password, user.password)) {
-// 		// the username, password combination is successful
-
-// 		const token = jwt.sign(
-// 			{
-// 				id: user._id,
-// 				username: user.username
-// 			},
-// 			JWT_SECRET
-// 		)
-
-// 		return res.json({ status: 'ok', data: token })
-// 	}
-
-// 	res.json({ status: 'error', error: 'Invalid username/password' })
-// })
 
 app.post("/signup", async(req,res) => {
     
