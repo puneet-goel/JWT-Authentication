@@ -6,7 +6,7 @@ import User from "../models/user.js";
 import mongoose from "mongoose";
 
 const router = express.Router();
-const url = "http://localhost:3000/reset-password/";
+const url = "https://jwt-auth-puneet.netlify.app/reset-password/";
 
 router.post("/login",async(req,res) => {
 

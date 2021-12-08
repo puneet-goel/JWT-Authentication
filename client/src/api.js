@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "https://v-meet-api.herokuapp.com";
+const url = "https://jwt-authorisation.herokuapp.com";
 
 export const login = async(email, password, username, check) => {
 
