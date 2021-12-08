@@ -29,15 +29,10 @@ const Register = () => {
                 validationSchema = {schema}
                 onSubmit = { 
                     async(values) => {
-                        const message = await register(values.email, values.password, values.username);
-                        if(message === "user added"){
+                        serverError.current = await register(values.email, values.password, values.username);
+                        if(serverError.current === "ok"){
                             navigate('/login');
-                        }else if(message === "duplicate user"){
-                            serverError.current = "Username/Email already exists";
-                        }else{
-                            serverError.current = "Something went wrong!! please Retry";
                         }
-                        console.log(message);
                     }
                 }
             >

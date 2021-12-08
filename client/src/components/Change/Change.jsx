@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Reset = () => {
+const Change = () => {
     
     return(
         <div>
@@ -9,4 +9,4 @@ const Reset = () => {
     )
 }
 
-export default Reset;
+export default Change;

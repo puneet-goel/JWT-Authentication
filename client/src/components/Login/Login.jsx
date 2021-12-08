@@ -27,15 +27,10 @@ const Register = () => {
                 validationSchema = {schema}
                 onSubmit = { 
                     async(values) => {
-                        const message = await login(values.email, values.password, values.username);
-                        if(message === "ok"){
+                        serverError.current = await login(values.email, values.password, values.username);
+                        if(serverError.current === "ok"){
                             navigate('/');
-                        }else if(message === "Invalid username/password" || message === "Invalid email/password"){
-                            serverError.current = message;
-                        }else{
-                            serverError.current = "Something went wrong!! please Retry";
                         }
-                        console.log(message);
                     }
                 }
             >

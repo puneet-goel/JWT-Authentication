@@ -25,13 +25,13 @@ app.post("/login",async(req,res) => {
         const user = await User.findOne({ username }).lean()
         
         if (!user) {
-            return res.json('Invalid username/password');
+            return res.json({ message: 'Invalid username/password'});
         }
 
         const match = await bcrypt.compare(password, user.password);
         
         if(!match ||  email!==user.email){
-            return res.json('Invalid email/password');
+            return res.json({ message: 'Invalid email/password'});
         }
 
         const token = jwt.sign({
@@ -41,10 +41,10 @@ app.post("/login",async(req,res) => {
             process.env.JWT_SECRET
         );
         
-        return res.status(200).json({token:token, message:"ok"});
+        return res.status(200).json({ message: "ok", token: token });
         
     }catch(err){
-        res.json(err);
+        res.status(500).json({ message: err});
     }
 })
 
@@ -59,14 +59,14 @@ app.post("/signup", async(req,res) => {
             password: hashedPassword 
         });
 
-        res.status(201).json('user added');
+        res.status(201).json({ message: "ok"});
     
     }catch (error) {
         if (error.code === 11000) {
 			// duplicate key
-            return res.json('duplicate user');
+            return res.json({ message: 'Username/Email already exists'});
 		} 
-        res.json(err);
+        res.status(500).json({ message: err});
     }
 })
 
