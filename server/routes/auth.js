@@ -123,6 +123,27 @@ router.post('/forgot', async(req,res) => {
     }catch(err){
         res.status(500).json({ message: err.message});
     }
-})
+});
+
+router.post('/authorize', async(req,res) => {
+    try{
+        const token = req.body.token;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        if(!mongoose.Types.ObjectId.isValid(decoded.id)){
+            return res.json({ message: 'no'});
+        }
+
+        const user = await User.findById(decoded.id);
+        if (!user || user.email !== decoded.email) {
+            return res.json({ message: 'no'});
+        }
+
+        return res.json({message: 'yes'});
+    }catch(err){
+        res.json({ message: 'no', error: err.message});
+    }
+});
+
 
 export default router;

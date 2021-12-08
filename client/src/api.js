@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000";
+const url = "https://v-meet-api.herokuapp.com";
 
 export const login = async(email, password, username, check) => {
 
@@ -73,6 +73,26 @@ export const resetPassword = async(id, username, password) => {
 
         const {data} = await axios.post(url + '/reset-password', user);
         return data.message;
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
+export const authorize = async() => {
+    try{
+        var token = decodeURIComponent(document.cookie);
+        if(!token || token.length <6 ){
+            return false;
+        }
+
+        token = token.substring(6);
+        const {data} = await axios.post(url + '/authorize', {token: token});
+        if(data.message === "yes"){
+            return true;
+        }else{
+            return false;
+        }
 
     }catch(err){
         console.log(err);
