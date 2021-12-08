@@ -8,8 +8,6 @@ import ResetPassword from './components/ResetPassword/ResetPassword';
 import Home from "./components/Home/Home";
 import { authorize } from "./api";
 
-
-
 const App = () => {
     
     const [isUserValid, setUserValid] = useState(false);
