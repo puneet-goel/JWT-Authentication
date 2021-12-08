@@ -41,8 +41,15 @@ const register = async(email, password, username) => {
     }
 }
 
-const reset = () => {
+const forgotPassword = async(email) => {
 
+    try{
+        const {data} = await axios.post(url + '/forgot', {email: email});
+        return data.message;
+
+    }catch(err){
+        console.log(err);
+    }
 }
 
-export {login, register, reset};
+export {login, register, forgotPassword};

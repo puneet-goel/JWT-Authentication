@@ -1,5 +1,5 @@
 import React,{ useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Formik, ErrorMessage, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
@@ -11,10 +11,15 @@ const schema = Yup.object().shape({
     password: Yup.string('Enter your password').min(5, 'Too Short!').required('Required')
 });
 
-const Register = () => {
+const Login = ({setUserValid}) => {
 
     const serverError = useRef('');
     const navigate = useNavigate();
+
+    const handleSignup = (e) => {
+        e.preventDefault();
+        navigate('/signup');
+    }
 
     return(
         <div>
@@ -29,6 +34,7 @@ const Register = () => {
                     async(values) => {
                         serverError.current = await login(values.email, values.password, values.username);
                         if(serverError.current === "ok"){
+                            setUserValid(true);
                             navigate('/');
                         }
                     }
@@ -61,16 +67,21 @@ const Register = () => {
                         }/>
 
                         <button type="submit">
-                            Login
+                            Submit
                         </button>
+                        <button  onClick={handleSignup}>
+                            New User? Sign up
+                        </button>
+                        <Link to="/forgot-password"> Forgot your password? </Link>
                         <span className="text-danger">
                             {serverError.current}
                         </span>
                     </Form>
                 )}
             </Formik>
+           
         </div>
     )
 }
 
-export default Register;
+export default Login;

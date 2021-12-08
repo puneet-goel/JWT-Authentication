@@ -1,5 +1,5 @@
 import React,{ useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Formik, ErrorMessage, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
@@ -12,10 +12,15 @@ const schema = Yup.object().shape({
     passwordConfirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
-const Register = () => {
+const Signup = () => {
 
     const serverError = useRef('');
     const navigate = useNavigate();
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        navigate('/login');
+    }
 
     return(
         <div>
@@ -71,8 +76,12 @@ const Register = () => {
                         }/>
 
                         <button type="submit">
-                            Signup
+                            Create an account
                         </button>
+                        <button onClick={handleLogin}>
+                            Already have an account?  Log in
+                        </button>
+                        <Link to="/forgot-password"> Forgot your password? </Link>
                         <span className="text-danger">
                             {serverError.current}
                         </span>
@@ -83,4 +92,4 @@ const Register = () => {
     )
 }
 
-export default Register;
+export default Signup;
