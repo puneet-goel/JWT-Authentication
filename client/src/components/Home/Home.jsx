@@ -7,7 +7,9 @@ const Home = ({setUserValid}) => {
     const handleLogout = (e) => {
         e.preventDefault();
         setUserValid(false);
-        sessionStorage.clear();
+
+        //delete the token cookie
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         navigate('/');
     }
 
@@ -15,7 +17,7 @@ const Home = ({setUserValid}) => {
         <div>
             Hello World
 
-            <button type="submit" onSubmit={handleLogout}>
+            <button onClick={handleLogout}>
                 Logout
             </button>
         </div>

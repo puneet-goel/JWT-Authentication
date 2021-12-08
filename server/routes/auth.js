@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import User from "../models/user.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 const url = "http://localhost:3000/reset-password/";
@@ -12,7 +13,7 @@ router.post("/login",async(req,res) => {
     try{
         
         const { username, email, password } = req.body;
-        const user = await User.findOne({ username }).lean()
+        const user = await User.findOne({ username }).lean();
         
         if (!user) {
             return res.json({ message: 'Invalid username/password'});
@@ -60,25 +61,22 @@ router.post("/signup", async(req,res) => {
     }
 })
 
-router.post("/change",async(req,res) => {
+router.post("/reset-password",async(req,res) => {
 
     try{
-        
-        const { username, email, oldPassword, newPassword } = req.body;
-        const user = await User.findOne({ username }).lean();
-        
-        if (!user) {
-            return res.json({ message: 'Invalid username/password'});
+        const { id, username, password } = req.body;
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.json({ message: 'Invalid Username or Link'});
         }
 
-        const match = await bcrypt.compare(oldPassword, user.password);
-        
-        if(!match ||  email!==user.email){
-            return res.json({ message: 'Invalid email/password'});
+        const user = await User.findById(id);
+        if (!user || user.username !== username) {
+            return res.json({ message: 'Invalid Username or Link'});
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword, 12);
-        
+        const hashedPassword = await bcrypt.hash(password, 12);
+        user.password = hashedPassword;
+        await user.save();        
         return res.status(200).json({ message: "ok" });
         
     }catch(err){

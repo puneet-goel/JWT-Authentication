@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url = "http://localhost:5000";
 
-const login = async(email, password, username) => {
+export const login = async(email, password, username, check) => {
 
     try{
         const user = {
@@ -14,7 +14,17 @@ const login = async(email, password, username) => {
         const {data} = await axios.post(url + '/login', user);
 
         if(data.message==="ok"){
-            localStorage.setItem('token', data.token);
+
+            //create a token cookie
+            const d = new Date();
+            var days = 1;
+            if(check){
+                days = 30;
+            }
+
+            d.setTime(d.getTime() + (days*24*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            document.cookie = `token=${data.token}; ${expires}; path=/;`;
         }
         
         return data.message;
@@ -24,7 +34,7 @@ const login = async(email, password, username) => {
     }
 }
 
-const register = async(email, password, username) => {
+export const register = async(email, password, username) => {
 
     try{
         const user = {
@@ -41,7 +51,7 @@ const register = async(email, password, username) => {
     }
 }
 
-const forgotPassword = async(email) => {
+export const forgotPassword = async(email) => {
 
     try{
         const {data} = await axios.post(url + '/forgot', {email: email});
@@ -52,4 +62,19 @@ const forgotPassword = async(email) => {
     }
 }
 
-export {login, register, forgotPassword};
+export const resetPassword = async(id, username, password) => {
+    try{
+
+        const user = {
+            id: id,
+            password: password,
+            username: username
+        };
+
+        const {data} = await axios.post(url + '/reset-password', user);
+        return data.message;
+
+    }catch(err){
+        console.log(err);
+    }
+}

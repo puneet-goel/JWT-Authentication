@@ -27,12 +27,13 @@ const Login = ({setUserValid}) => {
                 initialValues= {{
                     username: '',
                     email: '',
-                    password: ''
+                    password: '',
+                    toggle: false
                 }}
                 validationSchema = {schema}
                 onSubmit = { 
                     async(values) => {
-                        serverError.current = await login(values.email, values.password, values.username);
+                        serverError.current = await login(values.email, values.password, values.username, values.toggle);
                         if(serverError.current === "ok"){
                             setUserValid(true);
                             navigate('/');
@@ -65,6 +66,13 @@ const Login = ({setUserValid}) => {
                                 {msg}
                             </div>
                         }/>
+
+                        <label htmlFor="checkbox" className="form-label" >
+                            <Field type="checkbox" name="toggle"/>
+                            Remember me for a month
+                        </label>
+
+                        <br/>
 
                         <button type="submit">
                             Submit
