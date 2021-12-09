@@ -4,6 +4,7 @@ import { Formik, ErrorMessage, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
 import { resetPassword } from "../../api";
+import "./resetPassword.css";
 
 const regex = /^[a-z0-9_]+$/ ;
 const schema = Yup.object().shape({
