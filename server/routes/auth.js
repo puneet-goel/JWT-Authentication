@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 const url = "https://jwt-auth-puneet.netlify.app/reset-password/";
+// const url = "http://localhost:3000/reset-password/";
 
 router.post("/login",async(req,res) => {
 
@@ -97,7 +98,7 @@ router.post('/forgot', async(req,res) => {
         const html = `
             <h3>Hello , </h3>
             <p>Please click on the link below to reset your password for ${email}.</p>
-            <p>Reset Link: ${url + user._id}</p>
+            <p>Reset Link: ${url + user._id + "/" + user.username}</p>
             <br/>
             <p> If you didn't request this, please ignore this email.</p>
             <p>Thank You</p>
