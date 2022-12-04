@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const url = 'https://jwt-authorisation.herokuapp.com';
+const url = 'https://jwt-authorisation.onrender.com';
+//const herokuURL = 'https://jwt-authorisation.herokuapp.com';
 // const url = 'http://localhost:5000';
 
 export const login = async (email, password, username, check) => {
