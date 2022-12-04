@@ -1,4 +1,5 @@
 # JWT-Authentication
 JWT login and signup page with forgot password functionality
 
-Deployed: https://jwt-auth-puneet.netlify.app
+Frontend Deployment: https://jwt-auth-puneet.netlify.app
+Rendder Deployment: https://jwt-authorisation.onrender.com
